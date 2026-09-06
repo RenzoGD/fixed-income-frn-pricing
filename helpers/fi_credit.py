@@ -159,11 +159,14 @@ def price_risky_bond(
     #       = (1-R)*N * sum_i P_i*(Q_{i-1}-Q_i)   [dominant notional default loss]
     #       + sum_i coupon_i*P_i*(1-Q_i)            [coupon default loss, smaller]
     #
-    # The notional N appears in EVERY period, not only at maturity. Using cf_i
-    # (the period cash flow) instead of N would underestimate CVA because
-    # recovery is paid on the notional, not on the scheduled coupon.
+    # The notional N appears in EVERY period, not only at maturity. Using the
+    # period cash flow instead of N would underestimate CVA because recovery
+    # is paid on the notional, not on the scheduled coupon — so the cash flow
+    # carried in each cashflows[i] tuple is intentionally unused below (the
+    # smaller coupon-default-loss term above is a disclosed simplification,
+    # not implemented).
     cva, Q_prev = 0.0, 1.0
-    for T_i, cf_i, df_i in cashflows:
+    for T_i, _cf_i, df_i in cashflows:
         Q_i   = survival_prob(cds_bp, T_i, recovery)
         cva  += (1.0 - recovery) * df_i * notional * (Q_prev - Q_i)
         Q_prev = Q_i

@@ -41,7 +41,14 @@ def load_target_holidays(path: str) -> set:
         if isinstance(x, pd.Timestamp):
             out.add(x.date())
         elif isinstance(x, (datetime, date)):
-            out.add(x if isinstance(x, date) else x.date())
+            # datetime.datetime is a *subclass* of datetime.date, so
+            # `isinstance(x, date)` is True even for a bare datetime —
+            # check datetime first or a datetime with a nonzero time
+            # component would be stored as-is (never normalized via
+            # .date()), and would then silently fail every membership
+            # test in is_business_day(), since date == datetime is
+            # always False in Python regardless of the calendar day.
+            out.add(x.date() if isinstance(x, datetime) else x)
     return out
 
 

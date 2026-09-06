@@ -2,3 +2,22 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 .DS_Store
+
+# Generated intermediate data -- reproduced by running the notebooks in
+# folder order (01 -> 02 -> 03 -> 04). Only raw source inputs are committed.
+data/Interp_term_structure.xlsx
+data/pca_eigenvalues.csv
+data/pca_eigenvectors.csv
+data/pca_scores.csv
+data/q10_summary.csv
+data/q4_best_case_detail.csv
+data/q4_scenarios.csv
+data/q6_cva_detail.csv
+data/bond_factor_betas.csv
+data/hedge_factor_betas.csv
+data/credit_dv01_summary.csv
+
+# Generated figures -- reproduced by running the notebooks (folders kept via .gitkeep)
+01_data_curve_construction/figures/*.pdf
+03_risk_sensitivities_hedging/figures/*.pdf
+04_portfolio_risk/figures/*.pdf

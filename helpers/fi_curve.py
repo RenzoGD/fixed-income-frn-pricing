@@ -11,6 +11,7 @@ load_curve(path) -> pd.DataFrame
 make_df_fn(curve, spot_date) -> Callable[[date], float]
 shift_curve(curve, bump_cc) -> pd.DataFrame
 shift_curve_at_tenor(curve, tenor_y, bump_cc, width_y) -> pd.DataFrame
+shift_curve_key_rate(curve, tenor_y, bump_cc, all_tenors=None) -> pd.DataFrame
 
 Curve-shifting overview
 -----------------------
@@ -27,6 +28,12 @@ grid directly — no re-bootstrapping is required.
       Triangular bump centred on one tenor, tapering to zero over ±width_y.
       Use for the per-tenor IRS DV01 vector, where one IRS tenor is
       shocked in isolation while the rest of the curve stays flat.
+
+  shift_curve_key_rate(curve, tenor_y, bump_cc, all_tenors=None)
+      Key-rate hat function tapering to zero at the midpoints to the
+      adjacent tenor nodes (Tuckman & Serrat, Ch. 6), rather than a fixed
+      symmetric width. Use for key-rate duration / DV01 vectors where
+      regions must exactly partition the curve with no overlap.
 """
 
 from __future__ import annotations
@@ -187,8 +194,6 @@ def shift_curve_key_rate(
 
     Returns a new DataFrame; the original is unchanged.
     """
-    import numpy as np
-
     if all_tenors is None:
         all_tenors = np.array([1., 2., 3., 5., 7., 10., 15., 20.])
 
