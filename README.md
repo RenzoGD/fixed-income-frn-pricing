@@ -1,5 +1,7 @@
 # Fixed-Income FRN Pricing, CVA and Hedging
 
+> **Note:** This repository is under active review — results are being cross-checked against the write-up and the documentation is still being refined.
+
 Pricing, credit valuation adjustment, and interest-rate hedging of a
 EUR-denominated capped/floored floating-rate note (UniCredit Variable Rate
 Bond 2034, ISIN IT0005599110), built from a bootstrapped EUR swap curve.
